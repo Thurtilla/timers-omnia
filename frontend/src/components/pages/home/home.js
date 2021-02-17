@@ -8,31 +8,24 @@ export default function Home() {
     const timerReady = 'Go do it ape!'
     const runStarted = 'run started, end run to start timer'
     const countdownTime = 60000 * 60 * 18 //18 hours in millis
-    const [loading, setLoading] = useState(false)
-    const [loaded, setLoaded] = useState(false)
 
+    const [testSaving, setTestSaving] = useState(
+        JSON.parse(localStorage.getItem('POKEWATCH-timers')) ||
+        {
+            kanto: {
+                timestamp: null,
+            },
+            hoen: {
+                timestamp: null,
+            }
+        })
 
-
-    const [forSaving, setForSaving] = useState({
-        kanto: {
-            timestamp: null,
-        },
-        hoen: {
-            timestamp: null,
-        },
-        sinnoh: {
-            timer: null,
-        },
-        unova: {
-            timer: null,
-        }
-    })
     const [regions, setRegions] = useState({
         kanto: {
             timer: timerReady,
             button: newRun,
             btnClassNames: '',
-            event: '0'
+            event: '0',
         },
         hoen: {
             timer: timerReady,
@@ -44,7 +37,7 @@ export default function Home() {
             timer: timerReady,
             button: newRun,
             btnClassNames: '',
-            event: '2'
+            event: '2',
         },
         unova: {
             timer: timerReady,
@@ -61,83 +54,29 @@ export default function Home() {
         unova: 'unova'
     }
 
-    const testThis = () => {
-        console.log(regions)
-    }
-    useEffect(() => {
-        console.log('WE DID IT!')
-        loadTheShit()
-        // localStorage.getItem('POKEWATCH-timers') != null && setRegions(JSON.parse(localStorage.getItem('POKEWATCH-timers')))
-        // getTimers()
-    }, [])
 
-    const setTimer = (region, ievent, time) => {
-        setRegions({
-            ...regions, [region]: {
-                ...regions[region],
-                'timer': dailyResetTimer(region, ievent, time),
-                'button': resetRun,
-                'btnClassNames': 'btn-danger',
-                'event': '1337'
-            }
-        })
-    }
-    const loadTheShit = () => {
-        setLoaded(true)
-        if (localStorage.getItem('POKEWATCH-timers') == null) return
-        setForSaving(JSON.parse(localStorage.getItem('POKEWATCH-timers')))
-    }
     useEffect(() => { //LOADING
-        if (!loaded) return
         let names = ['kanto', 'hoen']
         let allRegions = { ...regions };
 
         names.forEach(regionName => {
-            allRegions[regionName].timer = dailyResetTimer(regionName, allRegions[regionName].event, forSaving[regionName].timestamp)
+            
+            if (testSaving[regionName].timestamp == null || testSaving[regionName].timestamp < Date.now) return
+            console.log('We have timestamp!')
+            allRegions[regionName].timer = dailyResetTimer(regionName, allRegions[regionName].event, testSaving[regionName].timestamp)
+            allRegions[regionName].btnClassNames = 'btn-danger'
+            allRegions[regionName].button = resetRun
+            allRegions[regionName].event = '1337'
         })
         setRegions(allRegions)
 
-
-
-
-
-
-
-
-
-
-
-
-
-        // names.forEach(region => {
-        //     console.log(region)
-        //     setRegions({
-        //         ...regions, [region]: {
-        //             ...regions[region],
-        //             'timer': dailyResetTimer(region, regions[region].event, forSaving[region].timestamp)
-        //         }
-        //     })
-        // })
-
-        // setRegions({
-        //     ...regions, [region]: {
-        //         ...regions[region],
-        //         'timer': dailyResetTimer(region, ievent, time),
-        //         'button': resetRun,
-        //         'btnClassNames': 'btn-danger',
-        //         'event': '1337'
-        //     }
-        // })
-        // setTimer('kanto', '0', forSaving.kanto.timestamp)
-        // setTimer('hoen', '1', forSaving.hoen.timestamp)
-
-    }, [forSaving])
-    useEffect(() => {//SAVING
-        if (!loaded) return
+    }, [])
+    useEffect(() => {
         saveCountdownToLocalstorage()
-    }, [forSaving])
+    }, [regions])
+
     const saveCountdownToLocalstorage = () => {
-        localStorage.setItem('POKEWATCH-timers', JSON.stringify(forSaving))
+        localStorage.setItem('POKEWATCH-timers', JSON.stringify(testSaving))
     }
     const handleTimerComplete = (region, ievent) => {
         setRegions({
@@ -159,7 +98,7 @@ export default function Home() {
     const resetClicked = (regionName, ievent) => {
         console.log('Reset clicked')
 
-        setForSaving({ ...forSaving, [regionName]: { ...forSaving[regionName], timestamp: null } })
+        setTestSaving({ ...testSaving, [regionName]: { ...testSaving[regionName], timestamp: null } })
         setRegions({
             ...regions, [regionName]: {
                 ...regions[regionName],
@@ -173,7 +112,6 @@ export default function Home() {
 
     const handleClick = (region) => {
         const target = region.target
-        console.log(regions)
         if (regions[target.name].timer === timerReady) {
             setRegions({
                 ...regions, [target.name]: {
@@ -185,7 +123,7 @@ export default function Home() {
             })
         } else if (regions[target.name].timer === runStarted) {
             const getTimeForCountdown = Date.now() + countdownTime
-            setForSaving({ ...forSaving, [target.name]: { ...forSaving[target.name], timestamp: getTimeForCountdown } })
+            setTestSaving({ ...testSaving, [target.name]: { ...testSaving[target.name], timestamp: getTimeForCountdown } })
             setRegions({
                 ...regions, [target.name]: {
                     ...regions[target.name],
@@ -195,12 +133,15 @@ export default function Home() {
                     'event': '1337'
                 }
             })
+            console.log('TESTSAVING:' + testSaving)
         } else {
             resetClicked(target.name, target.dataset.ievent)
-
         }
+    }
 
 
+    const testThis = () => {
+        console.log(regions)
     }
 
     return (
@@ -217,9 +158,9 @@ export default function Home() {
                         <span>Cool pic here ; )</span>
                     </Accordion.Collapse>
                 </Accordion>
-                <Accordion className="mb-3">
-                    <Form.Group className="">
-                        <Form.Label className="mr-4"><h2>Hoen: {regions.hoen.timer}</h2></Form.Label>
+                <Accordion className="mb-3 d-flex-auto">
+                    <Form.Group className="sickbg">
+                        <Form.Label className="mr-4">Hoen: {regions.hoen.timer}</Form.Label>
                         <Accordion.Toggle data-ievent='1' eventKey={regions.hoen.event} name={REGIONNAMES.hoen} as={Button} onClick={handleClick} size="small" className={regions.hoen.btnClassNames + ' '}>{regions.hoen.button}</Accordion.Toggle>
                     </Form.Group>
                     <Accordion.Collapse eventKey='1'>
