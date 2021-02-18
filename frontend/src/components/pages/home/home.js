@@ -9,7 +9,7 @@ export default function Home() {
     const runStarted = 'run started, end run to start timer'
     const countdownTime = 60000 * 60 * 18 //18 hours in millis
 
-    const [testSaving, setTestSaving] = useState(
+    const [testSaving, setTestSaving] = useState(() =>
         JSON.parse(localStorage.getItem('POKEWATCH-timers')) ||
         {
             kanto: {
@@ -26,7 +26,7 @@ export default function Home() {
             }
         })
 
-    const [regions, setRegions] = useState({
+    const [regions, setRegions] = useState(() => ({
         kanto: {
             timer: timerReady,
             button: newRun,
@@ -51,7 +51,7 @@ export default function Home() {
             btnClassNames: '',
             event: '3'
         }
-    })
+    }))
 
     const REGIONNAMES = {
         kanto: 'kanto',
@@ -85,70 +85,54 @@ export default function Home() {
     }
     const handleTimerComplete = (region, ievent) => {
         console.log(region)
-        resetClicked(region, ievent)
-        // setTestSaving({ ...testSaving, [region]: { ...testSaving[region], timestamp: null } })
-        // setRegions({
-        //     ...regions, [region]: {
-        //         ...regions[region],
-        //         'timer': timerReady,
-        //         'button': newRun,
-        //         'btnClassNames': '',
-        //         'event': ievent
-        //     }
-        // })
+        resetTimer(region, ievent)
     }
 
-    const dailyResetTimer = (region, ievent, time) => {
-        return (
-            <Countdown onComplete={() => handleTimerComplete(region, ievent)} date={parseInt(Date.now() + 4500)} /> //60000 * 60 * 18} />
-        )
-    }
-    const resetClicked = (regionName, ievent) => {
-        console.log(regionName)
-        setTestSaving({ ...testSaving, [regionName]: { ...testSaving[regionName], timestamp: null } })
-        setRegions({
-            ...regions, [regionName]: {
-                ...regions[regionName],
+    const resetTimer = (regionName, ievent) => {
+        console.log('reset')
+        setTestSaving((prevstate) => ({...prevstate, [regionName]: { ...prevstate[regionName], timestamp: null } }))
+        setRegions((prevstate) => ({
+            ...prevstate, [regionName]: {
+                ...prevstate[regionName],
                 'timer': timerReady,
                 'button': newRun,
                 'btnClassNames': '',
                 'event': ievent
             }
-        })
+        }))
+    }
+    const dailyResetTimer = (region, ievent, time) => {
+        return (
+             <Countdown intervalDelay={1000}  key={region} onComplete={(e) => handleTimerComplete(region, ievent)} date={parseInt(time)} /> //60000 * 60 * 18} />
+        )
     }
 
     const handleClick = (region) => {
         const target = region.target
         if (regions[target.name].timer === timerReady) {
-            setRegions({
-                ...regions, [target.name]: {
-                    ...regions[target.name],
+            setRegions((prevstate) => ({
+                ...prevstate, [target.name]: {
+                    ...prevstate[target.name],
                     'timer': runStarted,
                     'button': endRun,
                     'btnClassNames': 'btn-success'
                 }
-            })
+            }))
         } else if (regions[target.name].timer === runStarted) {
             const getTimeForCountdown = Date.now() + countdownTime
-            setTestSaving({ ...testSaving, [target.name]: { ...testSaving[target.name], timestamp: getTimeForCountdown } })
-            setRegions({
-                ...regions, [target.name]: {
-                    ...regions[target.name],
+            setTestSaving((prevstate) => ({ ...prevstate, [target.name]: { ...prevstate[target.name], timestamp: getTimeForCountdown } }))
+            setRegions((prevstate) => ({
+                ...prevstate, [target.name]: {
+                    ...prevstate[target.name],
                     'timer': dailyResetTimer(REGIONNAMES[target.name], target.dataset.ievent, getTimeForCountdown),
                     'button': resetRun,
                     'btnClassNames': 'btn-danger',
                     'event': '1337'
                 }
-            })
-            console.log(testSaving)
+            }))
         } else {
-            resetClicked(target.name, target.dataset.ievent)
+            resetTimer(target.name, target.dataset.ievent)
         }
-    }
-
-
-    const testThis = () => {
-        dailyResetTimer('kanto', '0', 10000)
     }
 
     return (
@@ -192,9 +176,8 @@ export default function Home() {
                         <span>Cool pic here ; )</span>
                     </Accordion.Collapse>
                 </Accordion>
+                <br />
 
-
-                <Button className="btn-danger mt-5" onClick={testThis}>Test!</Button>
             </div> {/* CONTAINER */}
 
         </>
