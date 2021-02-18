@@ -73,7 +73,7 @@ export default function Home() {
     }, [])
     useEffect(() => {
         saveCountdownToLocalstorage()
-    }, [regions])
+    }, [testSaving])
 
     const saveCountdownToLocalstorage = () => {
         localStorage.setItem('POKEWATCH-timers', JSON.stringify(testSaving))
@@ -147,21 +147,39 @@ export default function Home() {
     return (
         <>
             <div className="container">
-                <h1>PokeWatch | Lets go!</h1>
-                <br /><br /><br />
+                <h1 className="mt-2">PokeWatch | Lets go!</h1>
+                <br /><br />
                 <Accordion className="mb-3">
-                    <Form.Group className="">
-                        <Form.Label className="mr-4"><h2>Kanto: {regions.kanto.timer}</h2></Form.Label>
-                        <Accordion.Toggle data-ievent='0' eventKey={regions.kanto.event} name={REGIONNAMES.kanto} as={Button} onClick={handleClick} size="small" className={regions.kanto.btnClassNames + " "}>{regions.kanto.button}</Accordion.Toggle>
+                    <Form.Group className="d-flex align-items-center sickbg">
+                        <Accordion.Toggle size="md" className={regions.kanto.btnClassNames + " minwidth-xd ml-3"} data-ievent='0' eventKey={regions.kanto.event} name={REGIONNAMES.kanto} as={Button} onClick={handleClick}>{regions.kanto.button}</Accordion.Toggle>
+                        <Form.Label className="bigText ml-3">Kanto: {regions.kanto.timer}</Form.Label>
                     </Form.Group>
                     <Accordion.Collapse eventKey='0'>
                         <span>Cool pic here ; )</span>
                     </Accordion.Collapse>
                 </Accordion>
-                <Accordion className="mb-3 d-flex-auto">
-                    <Form.Group className="sickbg">
-                        <Form.Label className="mr-4">Hoen: {regions.hoen.timer}</Form.Label>
-                        <Accordion.Toggle data-ievent='1' eventKey={regions.hoen.event} name={REGIONNAMES.hoen} as={Button} onClick={handleClick} size="small" className={regions.hoen.btnClassNames + ' '}>{regions.hoen.button}</Accordion.Toggle>
+                <Accordion className="mb-3">
+                    <Form.Group className="d-flex align-items-center sickbg">
+                        <Accordion.Toggle className={regions.hoen.btnClassNames + ' minwidth-xd ml-3'} size="md" data-ievent='1' eventKey={regions.hoen.event} name={REGIONNAMES.hoen} as={Button} onClick={handleClick} >{regions.hoen.button}</Accordion.Toggle>
+                        <Form.Label className="bigText ml-3">Hoen: {regions.hoen.timer}</Form.Label>
+                    </Form.Group>
+                    <Accordion.Collapse eventKey='1'>
+                        <span>Cool pic here ; )</span>
+                    </Accordion.Collapse>
+                </Accordion>
+                <Accordion className="mb-3">
+                    <Form.Group className="d-flex align-items-center sickbg">
+                        <Accordion.Toggle className={regions.hoen.btnClassNames + ' minwidth-xd ml-3'} size="md" data-ievent='1' eventKey={regions.hoen.event} name={REGIONNAMES.hoen} as={Button} onClick={handleClick} >{regions.hoen.button}</Accordion.Toggle>
+                        <Form.Label className="bigText ml-3">Sinnoh: {regions.hoen.timer}</Form.Label>
+                    </Form.Group>
+                    <Accordion.Collapse eventKey='1'>
+                        <span>Cool pic here ; )</span>
+                    </Accordion.Collapse>
+                </Accordion>
+                <Accordion className="mb-3">
+                    <Form.Group className="d-flex align-items-center sickbg">
+                        <Accordion.Toggle className={regions.hoen.btnClassNames + ' minwidth-xd ml-3'} size="md" data-ievent='1' eventKey={regions.hoen.event} name={REGIONNAMES.hoen} as={Button} onClick={handleClick} >{regions.hoen.button}</Accordion.Toggle>
+                        <Form.Label className="bigText ml-3">Unova: {regions.hoen.timer}</Form.Label>
                     </Form.Group>
                     <Accordion.Collapse eventKey='1'>
                         <span>Cool pic here ; )</span>
@@ -169,7 +187,7 @@ export default function Home() {
                 </Accordion>
 
 
-                <Button className="btn-danger" onClick={testThis}>Test!</Button>
+                <Button className="btn-danger mt-5" onClick={testThis}>Test!</Button>
             </div> {/* CONTAINER */}
 
         </>

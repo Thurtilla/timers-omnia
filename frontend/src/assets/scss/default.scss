@@ -1,12 +1,14 @@
 @import "../../../node_modules/bootstrap/scss/bootstrap.scss";
 
-body, html, #root {
+body,
+html,
+#root {
     height: 100%;
 }
 #root {
     display: flex;
     flex-direction: column;
-   }
+}
 
 body {
     color: white;
@@ -16,14 +18,12 @@ body {
 //     position: fixed;
 // }
 
-footer{
-    
+footer {
     margin-top: auto;
     color: rgb(255, 255, 255);
     .logo {
         text-align: center;
     }
-
 }
 
 .blue-color {
@@ -32,9 +32,20 @@ footer{
 }
 
 .modal {
-    color:black;
+    color: black;
 }
 
 .sickbg {
-    background-color: yellow;
+    background-color: rgb(2, 73, 73);
+
+}
+
+.bigText {
+    font-size: 36px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin-bottom: 0;
+}
+
+.minwidth-xd {
+    min-width: 86px;
 }
