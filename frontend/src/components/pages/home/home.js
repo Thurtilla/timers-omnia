@@ -17,6 +17,12 @@ export default function Home() {
             },
             hoen: {
                 timestamp: null,
+            },
+            sinnoh: {
+                timestamp: null,
+            },
+            unova: {
+                timestamp: null,
             }
         })
 
@@ -56,13 +62,12 @@ export default function Home() {
 
 
     useEffect(() => { //LOADING
-        let names = ['kanto', 'hoen']
+        let names = ['kanto', 'hoen', 'sinnoh', 'unova']
         let allRegions = { ...regions };
 
         names.forEach(regionName => {
             
             if (testSaving[regionName].timestamp == null || testSaving[regionName].timestamp < Date.now) return
-            console.log('We have timestamp!')
             allRegions[regionName].timer = dailyResetTimer(regionName, allRegions[regionName].event, testSaving[regionName].timestamp)
             allRegions[regionName].btnClassNames = 'btn-danger'
             allRegions[regionName].button = resetRun
@@ -79,25 +84,27 @@ export default function Home() {
         localStorage.setItem('POKEWATCH-timers', JSON.stringify(testSaving))
     }
     const handleTimerComplete = (region, ievent) => {
-        setRegions({
-            ...regions, [region]: {
-                ...regions[region],
-                'timer': timerReady,
-                'button': newRun,
-                'btnClassNames': '',
-                'event': ievent
-            }
-        })
+        console.log(region)
+        resetClicked(region, ievent)
+        // setTestSaving({ ...testSaving, [region]: { ...testSaving[region], timestamp: null } })
+        // setRegions({
+        //     ...regions, [region]: {
+        //         ...regions[region],
+        //         'timer': timerReady,
+        //         'button': newRun,
+        //         'btnClassNames': '',
+        //         'event': ievent
+        //     }
+        // })
     }
 
     const dailyResetTimer = (region, ievent, time) => {
         return (
-            <Countdown onComplete={() => handleTimerComplete(region, ievent)} date={parseInt(time)} /> //60000 * 60 * 18} />
+            <Countdown onComplete={() => handleTimerComplete(region, ievent)} date={parseInt(Date.now() + 4500)} /> //60000 * 60 * 18} />
         )
     }
     const resetClicked = (regionName, ievent) => {
-        console.log('Reset clicked')
-
+        console.log(regionName)
         setTestSaving({ ...testSaving, [regionName]: { ...testSaving[regionName], timestamp: null } })
         setRegions({
             ...regions, [regionName]: {
@@ -133,7 +140,7 @@ export default function Home() {
                     'event': '1337'
                 }
             })
-            console.log('TESTSAVING:' + testSaving)
+            console.log(testSaving)
         } else {
             resetClicked(target.name, target.dataset.ievent)
         }
@@ -141,7 +148,7 @@ export default function Home() {
 
 
     const testThis = () => {
-        console.log(regions)
+        dailyResetTimer('kanto', '0', 10000)
     }
 
     return (
@@ -151,7 +158,7 @@ export default function Home() {
                 <br /><br />
                 <Accordion className="mb-3">
                     <Form.Group className="d-flex align-items-center sickbg">
-                        <Accordion.Toggle size="md" className={regions.kanto.btnClassNames + " minwidth-xd ml-3"} data-ievent='0' eventKey={regions.kanto.event} name={REGIONNAMES.kanto} as={Button} onClick={handleClick}>{regions.kanto.button}</Accordion.Toggle>
+                        <Accordion.Toggle size="md" className={regions.kanto.btnClassNames + " match-button-width ml-3"} data-ievent='0' eventKey={regions.kanto.event} name={REGIONNAMES.kanto} as={Button} onClick={handleClick}>{regions.kanto.button}</Accordion.Toggle>
                         <Form.Label className="bigText ml-3">Kanto: {regions.kanto.timer}</Form.Label>
                     </Form.Group>
                     <Accordion.Collapse eventKey='0'>
@@ -160,7 +167,7 @@ export default function Home() {
                 </Accordion>
                 <Accordion className="mb-3">
                     <Form.Group className="d-flex align-items-center sickbg">
-                        <Accordion.Toggle className={regions.hoen.btnClassNames + ' minwidth-xd ml-3'} size="md" data-ievent='1' eventKey={regions.hoen.event} name={REGIONNAMES.hoen} as={Button} onClick={handleClick} >{regions.hoen.button}</Accordion.Toggle>
+                        <Accordion.Toggle className={regions.hoen.btnClassNames + ' match-button-width ml-3'} size="md" data-ievent='1' eventKey={regions.hoen.event} name={REGIONNAMES.hoen} as={Button} onClick={handleClick} >{regions.hoen.button}</Accordion.Toggle>
                         <Form.Label className="bigText ml-3">Hoen: {regions.hoen.timer}</Form.Label>
                     </Form.Group>
                     <Accordion.Collapse eventKey='1'>
@@ -169,19 +176,19 @@ export default function Home() {
                 </Accordion>
                 <Accordion className="mb-3">
                     <Form.Group className="d-flex align-items-center sickbg">
-                        <Accordion.Toggle className={regions.hoen.btnClassNames + ' minwidth-xd ml-3'} size="md" data-ievent='1' eventKey={regions.hoen.event} name={REGIONNAMES.hoen} as={Button} onClick={handleClick} >{regions.hoen.button}</Accordion.Toggle>
-                        <Form.Label className="bigText ml-3">Sinnoh: {regions.hoen.timer}</Form.Label>
+                        <Accordion.Toggle className={regions.sinnoh.btnClassNames + ' match-button-width ml-3'} size="md" data-ievent='2' eventKey={regions.sinnoh.event} name={REGIONNAMES.sinnoh} as={Button} onClick={handleClick} >{regions.sinnoh.button}</Accordion.Toggle>
+                        <Form.Label className="bigText ml-3">Sinnoh: {regions.sinnoh.timer}</Form.Label>
                     </Form.Group>
-                    <Accordion.Collapse eventKey='1'>
+                    <Accordion.Collapse eventKey='2'>
                         <span>Cool pic here ; )</span>
                     </Accordion.Collapse>
                 </Accordion>
                 <Accordion className="mb-3">
                     <Form.Group className="d-flex align-items-center sickbg">
-                        <Accordion.Toggle className={regions.hoen.btnClassNames + ' minwidth-xd ml-3'} size="md" data-ievent='1' eventKey={regions.hoen.event} name={REGIONNAMES.hoen} as={Button} onClick={handleClick} >{regions.hoen.button}</Accordion.Toggle>
-                        <Form.Label className="bigText ml-3">Unova: {regions.hoen.timer}</Form.Label>
+                        <Accordion.Toggle className={regions.unova.btnClassNames + ' match-button-width ml-3'} size="md" data-ievent='3' eventKey={regions.unova.event} name={REGIONNAMES.unova} as={Button} onClick={handleClick} >{regions.unova.button}</Accordion.Toggle>
+                        <Form.Label className="bigText ml-3">Unova: {regions.unova.timer}</Form.Label>
                     </Form.Group>
-                    <Accordion.Collapse eventKey='1'>
+                    <Accordion.Collapse eventKey='3'>
                         <span>Cool pic here ; )</span>
                     </Accordion.Collapse>
                 </Accordion>
