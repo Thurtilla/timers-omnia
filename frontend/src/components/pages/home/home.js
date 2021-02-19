@@ -67,7 +67,7 @@ export default function Home() {
 
         names.forEach(regionName => {
             
-            if (testSaving[regionName].timestamp == null || testSaving[regionName].timestamp < Date.now) return
+            if (testSaving[regionName].timestamp == null || testSaving[regionName].timestamp < Date.now()) return
             allRegions[regionName].timer = dailyResetTimer(regionName, allRegions[regionName].event, testSaving[regionName].timestamp)
             allRegions[regionName].btnClassNames = 'btn-danger'
             allRegions[regionName].button = resetRun
