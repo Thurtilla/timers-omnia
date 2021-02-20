@@ -93,12 +93,10 @@ export default function Home() {
         localStorage.setItem('POKEWATCH-timers', JSON.stringify(testSaving))
     }
     const handleTimerComplete = (region, ievent) => {
-        console.log(region)
         resetTimer(region, ievent)
     }
 
     const resetTimer = (regionName, ievent) => {
-        console.log('reset')
         setTestSaving((prevstate) => ({ ...prevstate, [regionName]: { ...prevstate[regionName], timestamp: null } }))
         setRegions((prevstate) => ({
             ...prevstate, [regionName]: {
