@@ -3,7 +3,7 @@ Timers for PC's getting rented out by the hour
 
 
 
-## Timer for your gym runs!
+## Time customer renting time
 Just click start, and the customer can see the number on a screen
 
 
