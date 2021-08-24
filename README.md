@@ -1,15 +1,10 @@
-# PokeWatch
-Watcher for the game PokeMMO
+# Omnia Timers
+Timers for PC's getting rented out by the hour
 
 
 
 ## Timer for your gym runs!
-Always know when your gyms are about to be ready for takedown,\
-by using the pokewatch timers!
-
-## Easier runs!
-Use the images to know where gyms are and what type of gym it is!\
-### `Currently implementing this feature!`
+Just click start, and the customer can see the number on a screen
 
 
 
