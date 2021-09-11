@@ -59,3 +59,27 @@ footer {
 	color:red
 
 }
+
+.backgroundColor {
+	background-color: rgba($color: black, $alpha: 0.4);
+	// -webkit-text-stroke: 0.5px black; /* width and color */
+	-webkit-text-stroke-width: 1px;
+	-webkit-text-stroke-color: black;
+	-webkit-text-fill-color: white;
+}
+
+.bgOnText {
+	background-color: rgba($color: red, $alpha: 0.3);
+}
+
+.centerAbs {
+	// border: 2px solid purple;
+	
+	position: absolute;
+	bottom: 8px;
+	
+	left: 50%; /* position the left edge of the element at the middle of the parent */
+
+    transform: translate(-50%, -0%); /* This is a shorthand of
+                                         translateX(-50%) and translateY(-50%) */
+}
